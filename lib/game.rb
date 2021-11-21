@@ -47,6 +47,7 @@ class Game
     until board.full? do
       player_turns(current_player)
       break if board.game_over?
+
       @current_player = switch_player
     end
   end
