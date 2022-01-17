@@ -21,14 +21,31 @@ class Game
     end_game
   end
 
-  private
-
   def setup_players
     @player_one = create_player(1)
     @player_two = create_player(2)
     @current_player = [player_one, player_two].sample
     puts "\n #{current_player.name} has been randomly chosen to go first."
   end
+
+  def play
+    until board.full?
+      player_turns(current_player)
+      break if board.game_over?
+
+      @current_player = switch_player
+    end
+  end
+
+  def end_game
+    if board.game_over?
+      display_winner_message(current_player)
+    else
+      display_tie_message
+    end
+  end
+
+  private
 
   def create_player(number)
     display_player_name_prompt(number)
@@ -41,15 +58,6 @@ class Game
     display_player_info(player)
 
     player
-  end
-
-  def play
-    until board.full? do
-      player_turns(current_player)
-      break if board.game_over?
-
-      @current_player = switch_player
-    end
   end
 
   def player_turns(player)
@@ -79,13 +87,5 @@ class Game
 
   def switch_player
     current_player == player_one ? player_two : player_one
-  end
-
-  def end_game
-    if board.game_over?
-      display_winner_message(current_player)
-    else
-      display_tie_message
-    end
   end
 end
